@@ -16,3 +16,14 @@ export const createCategory = async (
     }
   } catch (error) {}
 };
+
+export const getCategory = async (req: Request, res: Response) => {
+  try {
+    const active = await Category.find();
+    return response.success(res, { body: active });
+  } catch (error) {
+    if (error instanceof Error) {
+      response.error(res, { error: error.message });
+    }
+  }
+};

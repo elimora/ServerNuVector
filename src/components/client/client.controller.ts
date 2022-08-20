@@ -47,7 +47,6 @@ export const updateClient = async (
   try {
     const { id } = req.params;
     const { name, city, state, country } = req.body;
-    console.log(req.body);
     if (!name || !city || !state || !country) {
       return response.error(res, { error: "Invalid body.", status: 400 });
     }
@@ -60,7 +59,6 @@ export const updateClient = async (
         status: 404,
       });
     }
-    console.log({ ...req.body, id });
     const updated = await Client.save({ ...req.body, id });
     return response.success(res, {
       text: "Client updated successfully!",
