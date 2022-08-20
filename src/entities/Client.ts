@@ -24,7 +24,7 @@ export class Client extends BaseEntity {
   @Column({ name: "country" })
   country: string;
 
-  @Column({ name: "industry_codes" })
+  @Column({ name: "industry_codes", nullable: true })
   industryCodes: string;
 
   @Column({ name: "active" })
