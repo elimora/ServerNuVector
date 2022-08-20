@@ -7,6 +7,7 @@ import clientRout from "./components/client/client.route";
 import projectRoutes from "./components/project/project.route";
 import taskRoutes from "./components/task/task.route";
 import contractorRoutes from "./components/contractor/contractor.route";
+import activityRoutes from "./components/activity/activity.route";
 
 import { json } from "stream/consumers";
 
@@ -29,6 +30,7 @@ app
   .use(projectRoutes)
   .use(taskRoutes)
   .use(categoryRoutes)
-  .use(contractorRoutes);
+  .use(contractorRoutes)
+  .use(activityRoutes);
 
 export default app;
