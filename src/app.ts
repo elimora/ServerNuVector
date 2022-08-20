@@ -6,6 +6,7 @@ import categoryRoutes from "./components/category/category.route";
 import clientRout from "./components/client/client.route";
 import projectRoutes from "./components/project/project.route";
 import taskRoutes from "./components/task/task.route";
+import contractorRoutes from "./components/contractor/contractor.route";
 
 import { json } from "stream/consumers";
 
@@ -23,6 +24,11 @@ app
   .use(express.json())
   .use(express.static("public"));
 
-app.use(clientRout).use(projectRoutes).use(taskRoutes).use(categoryRoutes);
+app
+  .use(clientRout)
+  .use(projectRoutes)
+  .use(taskRoutes)
+  .use(categoryRoutes)
+  .use(contractorRoutes);
 
 export default app;
