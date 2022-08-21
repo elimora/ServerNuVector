@@ -21,6 +21,7 @@ export const createTaskEntry = async (
       billable_flag,
       date,
     } = req.body;
+    console.log(req.body); ///////////////
     if (
       !duration ||
       !contractor ||
@@ -34,20 +35,25 @@ export const createTaskEntry = async (
       !date
     ) {
       return response.error(res, {
-        error: "Invalid task-entry body",
+        error: "Invalid task-entry body eli mora",
         status: 500,
       });
     }
 
-    const { id } = Task.create(req.body);
+    const task = Task.create(req.body);
+    await task.save();
 
-    const created = await Task.findOneBy({ id });
-    if (!created)
-      return response.error(res, { error: "Error fetching register." });
+    // const { id } = Task.create(req.body);  is not ok
+    // const created = await Task.findOneBy({ id });  is not ok
+
+    // if (!created) {
+    //   return response.error(res, { error: "Error fetching register." });
+    // }  is not ok
 
     return response.success(res, {
       text: "Successfully task-entry Created",
-      body: created,
+      //body: created, is not ok
+      body: task,
     });
   } catch (error) {
     if (error instanceof Error) {
