@@ -42,18 +42,16 @@ export const createTaskEntry = async (
 
     const task = Task.create(req.body);
     await task.save();
+    const created = await Task.findOneBy({ id: task.id });
 
-    // const { id } = Task.create(req.body);  is not ok
-    // const created = await Task.findOneBy({ id });  is not ok
-
-    // if (!created) {
-    //   return response.error(res, { error: "Error fetching register." });
-    // }  is not ok
+    if (!created) {
+      return response.error(res, { error: "Error fetching register." });
+    }
 
     return response.success(res, {
       text: "Successfully task-entry Created",
       //body: created, is not ok
-      body: task,
+      body: created,
     });
   } catch (error) {
     if (error instanceof Error) {
@@ -79,7 +77,7 @@ export const getTaskEntries = async (
     const queryBuilder = Task.getRepository()
       .createQueryBuilder("task")
       .leftJoinAndMapOne("task.client", "task.client", "client")
-      .leftJoinAndMapOne("task.contactor", "task.contractor", "contractor")
+      .leftJoinAndMapOne("task.contractor", "task.contractor", "contractor")
       .leftJoinAndMapOne("task.project", "task.project", "project")
       .leftJoinAndMapOne("task.product", "task.product", "products")
       .leftJoinAndMapOne("task.activity", "task.activity", "activity")
