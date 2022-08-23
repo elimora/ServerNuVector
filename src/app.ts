@@ -15,7 +15,6 @@ import { json } from "stream/consumers";
 import dotnet from "dotenv";
 
 const app = express();
-const router = express.Router();
 
 if (app.get("env") === "development") {
   dotnet.config();
@@ -27,7 +26,7 @@ app
   .use(express.json())
   .use(express.static("public"));
 
-router
+app
   .use(clientRout)
   .use(projectRoutes)
   .use(taskRoutes)
@@ -35,7 +34,5 @@ router
   .use(contractorRoutes)
   .use(activityRoutes)
   .use(productsRouts);
-
-app.use("/api", router);
 
 export default app;
