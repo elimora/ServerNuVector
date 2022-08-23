@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { FindManyOptions } from "typeorm";
+import { FindManyOptions, ILike } from "typeorm";
 import { Task } from "../../entities/Task";
 import response from "../../route/response.route";
 import { IGetTaskEntriesQuery } from "./task.interface";
@@ -84,7 +84,9 @@ export const getTaskEntries = async (
       .leftJoinAndMapOne("task.category", "task.category", "category");
 
     if (client) {
-      queryBuilder.andWhere("task.client_id = :clientId", { clientId: client });
+      queryBuilder.andWhere("client.name LIKE :clientName", {
+        clientName: `%${client}%`,
+      });
     }
 
     if (order) {

@@ -41,7 +41,7 @@ export const getProjects = async (
     const query: FindManyOptions<Project>["where"] = [];
 
     if (client) {
-      query.push({ client: { id: client } });
+      query.push({ client: { name: ILike(`%${client}%`) } });
     }
     if (name) {
       query.push({ name: ILike(`%${name}%`) });
