@@ -20,7 +20,7 @@ function main() {
         try {
             yield db_config_1.AppDataSource.initialize();
             console.log("DataBase connected");
-            app_1.default.listen(3000, () => {
+            app_1.default.listen(process.env.PORT || 3000, () => {
                 console.log("Server is listening on port 3000");
             });
         }

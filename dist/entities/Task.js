@@ -11,7 +11,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Task = void 0;
 const typeorm_1 = require("typeorm");
+const Activity_1 = require("./Activity");
+const Category_1 = require("./Category");
 const Client_1 = require("./Client");
+const Contractor_1 = require("./Contractor");
+const Produtc_1 = require("./Produtc");
+const Project_1 = require("./Project");
 let Task = class Task extends typeorm_1.BaseEntity {
 };
 __decorate([
@@ -19,41 +24,40 @@ __decorate([
     __metadata("design:type", String)
 ], Task.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], Task.prototype, "order", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
+    (0, typeorm_1.ManyToOne)(() => Contractor_1.Contractor, { eager: true }),
+    __metadata("design:type", Contractor_1.Contractor)
 ], Task.prototype, "contractor", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
-], Task.prototype, "range", void 0);
+], Task.prototype, "duration", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Boolean)
-], Task.prototype, "flag", void 0);
+], Task.prototype, "billable_flag", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
+    __metadata("design:type", Date)
+], Task.prototype, "date", void 0);
+__decorate([
+    (0, typeorm_1.ManyToOne)(() => Project_1.Project, { eager: true }),
+    __metadata("design:type", Project_1.Project)
 ], Task.prototype, "project", void 0);
 __decorate([
-    (0, typeorm_1.ManyToOne)(() => Client_1.Client),
-    (0, typeorm_1.JoinColumn)({ name: "client_id" }),
+    (0, typeorm_1.ManyToOne)(() => Client_1.Client, { eager: true }),
     __metadata("design:type", Client_1.Client)
 ], Task.prototype, "client", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
+    (0, typeorm_1.ManyToOne)(() => Produtc_1.Product, { eager: true }),
+    __metadata("design:type", Produtc_1.Product)
 ], Task.prototype, "product", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
+    (0, typeorm_1.ManyToOne)(() => Activity_1.Activity, { eager: true }),
+    __metadata("design:type", Activity_1.Activity)
 ], Task.prototype, "activity", void 0);
 __decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
+    (0, typeorm_1.ManyToOne)(() => Category_1.Category, { eager: true }),
+    __metadata("design:type", Category_1.Category)
 ], Task.prototype, "category", void 0);
 __decorate([
     (0, typeorm_1.Column)(),

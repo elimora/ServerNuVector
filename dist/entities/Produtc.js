@@ -14,27 +14,23 @@ const typeorm_1 = require("typeorm");
 let Product = class Product extends typeorm_1.BaseEntity {
 };
 __decorate([
-    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    (0, typeorm_1.PrimaryGeneratedColumn)("increment"),
     __metadata("design:type", Number)
 ], Product.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
-    __metadata("design:type", Number)
-], Product.prototype, "CodeProduct", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
-], Product.prototype, "Description", void 0);
+], Product.prototype, "description", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Boolean)
-], Product.prototype, "Active", void 0);
+], Product.prototype, "active", void 0);
 __decorate([
-    (0, typeorm_1.CreateDateColumn)(),
+    (0, typeorm_1.CreateDateColumn)({ name: "created_at" }),
     __metadata("design:type", Date)
 ], Product.prototype, "createdAt", void 0);
 __decorate([
-    (0, typeorm_1.UpdateDateColumn)(),
+    (0, typeorm_1.UpdateDateColumn)({ name: "updated_at" }),
     __metadata("design:type", Date)
 ], Product.prototype, "updatedAt", void 0);
 Product = __decorate([

@@ -12,11 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getProject = exports.deleteProject = exports.updataProject = exports.getProjects = exports.creteProject = void 0;
+exports.getProject = exports.deleteProject = exports.updataProject = exports.getProjects = exports.createProject = void 0;
 const typeorm_1 = require("typeorm");
 const Project_1 = require("../../entities/Project");
 const response_route_1 = __importDefault(require("../../route/response.route"));
-const creteProject = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const createProject = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { name, description, active, client } = req.body;
         if (!client || !name || !description || !active) {
@@ -34,18 +34,18 @@ const creteProject = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
     catch (error) {
         if (error instanceof Error) {
-            return res.status(500).json({ error: error.message });
+            return;
+            // return res.status(500).json({ error: error.message });
         }
     }
 });
-exports.creteProject = creteProject;
+exports.createProject = createProject;
 const getProjects = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { client, name } = req.query;
         const query = [];
-        console.log(name);
         if (client) {
-            query.push({ client: { id: client } });
+            query.push({ client: { name: (0, typeorm_1.ILike)(`%${client}%`) } });
         }
         if (name) {
             query.push({ name: (0, typeorm_1.ILike)(`%${name}%`) });
@@ -55,9 +55,18 @@ const getProjects = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             options.where = query;
         }
         const projects = yield Project_1.Project.find(options);
-        yield Project_1.Project.save(Object.assign(Object.assign({}, req.body), { products: [{ id: 1 }] }));
-        yield Project_1.Project.save(Object.assign(Object.assign({}, req.body), { products: [...req.body.products, { id: 24 }] }));
-        yield Project_1.Project.save(Object.assign(Object.assign({}, req.body), { products: req.body.products.filter((product) => product.id !== 30) }));
+        // await Project.save<Project>({
+        //   ...req.body,
+        //   products: [{ id: 1 }],
+        // });
+        // await Project.save<Project>({
+        //   ...req.body,
+        //   products: [...req.body.products, { id: 24 }],
+        // });
+        // await Project.save<Project>({
+        //   ...req.body,
+        //   products: req.body.products.filter((product) => product.id !== 30),
+        // });
         return response_route_1.default.success(res, { body: projects });
     }
     catch (error) {

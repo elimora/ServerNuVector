@@ -17,24 +17,33 @@ const Task_1 = require("../../entities/Task");
 const response_route_1 = __importDefault(require("../../route/response.route"));
 const createTaskEntry = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { range, contractor, project, product, activity, category, client, order, description, flag, } = req.body;
-        if (!range ||
+        const { duration, contractor, project, product, activity, category, client, description, billable_flag, date, } = req.body;
+        console.log(req.body); ///////////////
+        if (!duration ||
             !contractor ||
             !project ||
             !product ||
             !activity ||
             !category ||
             !client ||
-            !order ||
             !description ||
-            !flag) {
-            response_route_1.default.error(res, { error: "Invalid task-entry body", status: 500 });
+            !billable_flag ||
+            !date) {
+            return response_route_1.default.error(res, {
+                error: "Invalid task-entry body eli mora",
+                status: 500,
+            });
         }
-        const taskEntry = Task_1.Task.create(req.body);
-        yield taskEntry.save();
+        const task = Task_1.Task.create(req.body);
+        yield task.save();
+        const created = yield Task_1.Task.findOneBy({ id: task.id });
+        if (!created) {
+            return response_route_1.default.error(res, { error: "Error fetching register." });
+        }
         return response_route_1.default.success(res, {
             text: "Successfully task-entry Created",
-            body: req.body,
+            //body: created, is not ok
+            body: created,
         });
     }
     catch (error) {
@@ -54,9 +63,16 @@ const getTaskEntries = (req, res) => __awaiter(void 0, void 0, void 0, function*
         }
         const queryBuilder = Task_1.Task.getRepository()
             .createQueryBuilder("task")
-            .select("*");
+            .leftJoinAndMapOne("task.client", "task.client", "client")
+            .leftJoinAndMapOne("task.contractor", "task.contractor", "contractor")
+            .leftJoinAndMapOne("task.project", "task.project", "project")
+            .leftJoinAndMapOne("task.product", "task.product", "products")
+            .leftJoinAndMapOne("task.activity", "task.activity", "activity")
+            .leftJoinAndMapOne("task.category", "task.category", "category");
         if (client) {
-            queryBuilder.andWhere("task.client_id = :clientId", { clientId: client });
+            queryBuilder.andWhere("client.name LIKE :clientName", {
+                clientName: `%${client}%`,
+            });
         }
         if (order) {
             const parsedOrder = order.split(",").map((clause) => ({
@@ -67,7 +83,7 @@ const getTaskEntries = (req, res) => __awaiter(void 0, void 0, void 0, function*
                 queryBuilder.addOrderBy(orderObj.field, orderObj.direction);
             }
         }
-        const tasks = yield queryBuilder.getRawMany();
+        const tasks = (yield queryBuilder.getMany()).map((entry) => entry);
         return response_route_1.default.success(res, { body: tasks });
     }
     catch (error) {
@@ -80,18 +96,17 @@ exports.getTaskEntries = getTaskEntries;
 const updateTaskEntry = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const { range, contractor, project, product, activity, category, client, order, description, flag, } = req.body;
-        if (!range ||
+        const { duration, contractor, project, product, activity, category, client, description, billable_flag, } = req.body;
+        if (!duration ||
             !contractor ||
             !project ||
             !product ||
             !activity ||
             !category ||
             !client ||
-            !order ||
             !description ||
-            !flag) {
-            response_route_1.default.error(res, {
+            !billable_flag) {
+            return response_route_1.default.error(res, {
                 error: "Invalid task-entry body to update",
                 status: 500,
             });

@@ -21,8 +21,6 @@ __decorate([
 ], Project.prototype, "id", void 0);
 __decorate([
     (0, typeorm_1.ManyToOne)(() => Client_1.Client, { eager: true }),
-    (0, typeorm_1.JoinColumn)({ name: "client" }) //quite esto de aca { name: "client_id" }
-    ,
     __metadata("design:type", Client_1.Client)
 ], Project.prototype, "client", void 0);
 __decorate([

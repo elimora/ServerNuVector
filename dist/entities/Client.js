@@ -34,7 +34,7 @@ __decorate([
     __metadata("design:type", String)
 ], Client.prototype, "country", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ name: "industry_codes" }),
+    (0, typeorm_1.Column)({ name: "industry_codes", nullable: true }),
     __metadata("design:type", String)
 ], Client.prototype, "industryCodes", void 0);
 __decorate([
