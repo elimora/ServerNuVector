@@ -9,13 +9,18 @@ import { Task } from "../entities/Task";
 import { env } from "process";
 
 export const AppDataSource = new DataSource({
-  type: "mysql",
+  type: "postgres",
   host: env.DB_HOST,
   username: env.DB_USERNAME,
   password: env.DB_PASSWORD,
-  port: 3306 || process.env,
+  port: +(env.DB_PORT ?? 3306),
   database: env.DB_NAME,
   entities: [Client, Contractor, Project, Product, Category, Activity, Task],
-  logging: true,
   synchronize: true,
+  ssl: true,
+  extra: {
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  },
 });
