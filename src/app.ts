@@ -2,6 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import cors from "cors";
 
+import path from "path";
 import categoryRoutes from "./components/category/category.route";
 import clientRout from "./components/client/client.route";
 import projectRoutes from "./components/project/project.route";
@@ -37,5 +38,13 @@ router
   .use(productsRouts);
 
 app.use("/api", router);
+
+app.get("/*", function (req, res) {
+  res.sendFile(path.join(__dirname, "../public/index.html"), function (err) {
+    if (err) {
+      res.status(500).send(err);
+    }
+  });
+});
 
 export default app;
