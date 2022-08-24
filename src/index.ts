@@ -3,6 +3,7 @@ import app from "./app";
 import { AppDataSource } from "./config/db.config";
 
 async function main() {
+  
   try {
     await AppDataSource.initialize();
     console.log("DataBase connected");
