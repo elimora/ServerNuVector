@@ -1,1 +1,1 @@
-web: nodemon
+web: node dist/index.js
